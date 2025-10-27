@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unduh Sertifikat Peserta</title>
+    <!-- Memuat Tailwind CSS dari CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Font Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Sembunyikan scrollbar untuk container tabel */
+        .table-container::-webkit-scrollbar {
+            display: none;
+        }
+        .table-container {
+            -ms-overflow-style: none;  /* IE dan Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-100 min-h-screen flex items-center justify-center py-12 px-4 font-['Inter']">
+
+    <div class="w-full max-w-3xl mx-auto">
+        <!-- Kartu Utama -->
+        <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+            
+            <!-- Ikon Header -->
+            <div class="flex justify-center mb-4">
+                <svg class="w-12 h-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+            </div>
+
+            <h1 class="text-3xl font-bold text-center text-gray-900 mb-6">
+                Daftar Sertifikat Peserta
+            </h1>
+
+            <!-- Form Pencarian -->
+            <div class="mb-6">
+                <label for="searchInput" class="block text-sm font-medium text-gray-700 mb-2">Cari Nama Peserta:</label>
+                <input 
+                    type="text" 
+                    id="searchInput"
+                    placeholder="Ketik nama untuk memfilter..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 shadow-sm"
+                />
+            </div>
+
+            <!-- Area Hasil Tabel -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="max-h-[60vh] overflow-y-auto table-container">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50 sticky top-0">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Nama Peserta
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Tindakan
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="certificateTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Baris 'Loading' -->
+                            <tr id="loadingRow">
+                                <td colspan="2" class="px-6 py-12 text-center text-gray-500">
+                                    Memuat data...
+                                </td>
+                            </tr>
+                            <!-- Baris 'Tidak Ditemukan' (tersembunyi) -->
+                            <tr id="notFoundRow" style="display: none;">
+                                <td colspan="2" class="px-6 py-12 text-center text-gray-500">
+                                    Nama tidak ditemukan.
+                                </td>
+                            </tr>
+                            <!-- Data akan dimasukkan di sini oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Kredit -->
+        <div class="text-center mt-8">
+            <p class="text-sm text-gray-600">
+                Created by 
+                <a href="https://asep-trisna-setiawan.sta.my.id/" 
+                   class="font-medium text-blue-600 hover:underline" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                   A. Trisna Setiawan
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const tableBody = document.getElementById('certificateTableBody');
+        const loadingRow = document.getElementById('loadingRow');
+        const notFoundRow = document.getElementById('notFoundRow');
+
+        let allCertificates = []; // Cache untuk menyimpan semua data
+
+        // 1. Fungsi untuk mengambil semua data saat halaman dimuat
+        async function fetchAllCertificates() {
+            try {
+                const response = await fetch('/all-certificates');
+                
+                if (!response.ok) {
+                    throw new Error(`Gagal memuat: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                // Sortir data berdasarkan nama (A-Z)
+                allCertificates = data.sort((a, b) => a.name.localeCompare(b.name));
+                
+                populateTable(allCertificates);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                loadingRow.innerHTML = '<td colspan="2" class="px-6 py-12 text-center text-red-600">Gagal memuat data. Coba muat ulang halaman.</td>';
+            }
+        }
+
+        // 2. Fungsi untuk mengisi tabel dengan data
+        function populateTable(certificates) {
+            // Hapus baris 'loading'
+            loadingRow.style.display = 'none';
+            // Kosongkan tabel
+            tableBody.innerHTML = ''; 
+
+            if (certificates.length === 0) {
+                // Jika tabel kosong SETELAH loading, tampilkan 'tidak ditemukan'
+                // Kita perlu menambahkan notFoundRow kembali jika dikosongkan oleh innerHTML
+                tableBody.appendChild(notFoundRow);
+                notFoundRow.style.display = 'table-row';
+                return;
+            }
+            
+            notFoundRow.style.display = 'none'; // Sembunyikan 'tidak ditemukan'
+
+            // Loop setiap hasil dan buat elemen HTML-nya
+            certificates.forEach(cert => {
+                const row = document.createElement('tr');
+                // --- PERUBAHAN UI: hover:bg-blue-50 ---
+                row.className = 'hover:bg-blue-50 transition-colors duration-150';
+
+                // Kolom Nama
+                const nameCell = document.createElement('td');
+                nameCell.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900';
+                nameCell.textContent = cert.name;
+
+                // Kolom Tombol Unduh
+                const actionCell = document.createElement('td');
+                actionCell.className = 'px-6 py-4 whitespace-nowrap text-right text-sm font-medium';
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = cert.filePath; // Path dari database
+                downloadLink.textContent = 'Unduh';
+                downloadLink.setAttribute('download', ''); // Atribut 'download'
+                downloadLink.className = 'inline-block bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 shadow-sm text-xs';
+                
+                actionCell.appendChild(downloadLink);
+                row.appendChild(nameCell);
+                row.appendChild(actionCell);
+                tableBody.appendChild(row);
+            });
+            
+            // Pastikan notFoundRow ada di DOM untuk pencarian berikutnya
+            tableBody.appendChild(notFoundRow);
+            notFoundRow.style.display = 'none';
+        }
+
+        // 3. Fungsi untuk memfilter tabel (Client-Side)
+        function filterTable() {
+            const query = searchInput.value.toLowerCase().trim();
+
+            // Filter data dari cache 'allCertificates'
+            const filteredData = allCertificates.filter(cert => {
+                return cert.name.toLowerCase().includes(query);
+            });
+
+            // Tampilkan ulang tabel dengan data yang sudah difilter
+            populateTable(filteredData);
+        }
+
+        // 4. Tambahkan event listener
+        // Jalankan filter setiap kali pengguna mengetik
+        searchInput.addEventListener('keyup', filterTable);
+
+        // Ambil data saat halaman pertama kali dimuat
+        document.addEventListener('DOMContentLoaded', fetchAllCertificates);
+    </script>
+
+</body>
+</html>
+

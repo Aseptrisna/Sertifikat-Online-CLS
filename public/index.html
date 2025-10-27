@@ -16,15 +16,15 @@
             width: 8px;
         }
         .list-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: #f8fafc; /* Lebih terang */
             border-radius: 10px;
         }
         .list-container::-webkit-scrollbar-thumb {
-            background: #d1d5db;
+            background: #cbd5e1; /* Sedikit lebih gelap */
             border-radius: 10px;
         }
         .list-container::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
+            background: #94a3b8;
         }
         
         /* Animasi untuk item kartu */
@@ -44,35 +44,38 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-blue-100 min-h-screen py-12 px-4 font-['Inter']">
+<body class="bg-gray-50 min-h-screen py-12 px-4 font-['Inter']">
 
     <div class="w-full max-w-3xl mx-auto">
         <!-- Kartu Utama -->
-        <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+        <!-- (PERUBAHAN) Shadow lebih halus, padding lebih besar di layar kecil -->
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100">
             
-            <!-- Ikon Header -->
-            <div class="flex justify-center mb-4">
-                <svg class="w-12 h-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
-                </svg>
+            <!-- (PERUBAHAN) Ikon Header dengan "Branding" -->
+            <div class="flex justify-center mb-5">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center shadow-lg">
+                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                    </svg>
+                </div>
             </div>
 
-            <h1 class="text-3xl font-bold text-center text-gray-900 mb-2">
+            <h1 class="text-3xl font-bold text-center text-gray-900 mb-3">
                 Daftar Sertifikat Peserta
             </h1>
             
-            <!-- Teks Sub-judul (BARU DITAMBAHKAN) -->
-            <p class="text-center text-gray-600 text-base mt-2 mb-8 max-w-lg mx-auto">
-                Pada kegiatan Connected Learning Summit - Local Event Indonesia
-                yang diselenggarakan di Institut Teknologi Bandung pada tanggal
-                9 Oktober 2025
-            </p>
+            <!-- (PERUBAHAN) Teks Sub-judul dengan Hierarki -->
+            <div class="text-center text-gray-600 text-sm mt-2 mb-8 max-w-lg mx-auto leading-relaxed">
+                <p class="font-medium text-gray-800">Connected Learning Summit - Local Event Indonesia</p>
+                <p>Diselenggarakan di <span class="font-medium">Institut Teknologi Bandung</span></p>
+                <p>Pada tanggal <span class="font-medium">9 Oktober 2025</span></p>
+            </div>
 
-            <!-- Form Pencarian (Dengan Ikon) -->
+            <!-- (PERUBAHAN) Form Pencarian dengan efek Fokus -->
             <div class="mb-4">
                 <label for="searchInput" class="block text-sm font-medium text-gray-700 mb-2">Cari Nama Peserta:</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div class="relative transition-shadow duration-200 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                         <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
@@ -81,18 +84,18 @@
                         type="text" 
                         id="searchInput"
                         placeholder="Ketik nama untuk memfilter..."
-                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 shadow-sm"
+                        class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-transparent transition duration-200 shadow-sm"
                     />
                 </div>
             </div>
 
             <!-- Info Hasil Pencarian -->
-            <div class="h-6 mb-4"> <!-- h-6 memastikan layout tidak melompat -->
+            <div class="h-6 mb-4">
                  <p id="resultsCounter" class="text-sm text-gray-600 transition-opacity duration-300"></p>
             </div>
 
             <!-- Area Hasil -->
-            <div id="certificateListContainer" class="bg-gray-50 p-4 rounded-lg max-h-[50vh] overflow-y-auto list-container border border-gray-200"> 
+            <div id="certificateListContainer" class="bg-gray-50 p-3 sm:p-4 rounded-lg max-h-[50vh] overflow-y-auto list-container border border-gray-200"> 
                 
                 <!-- State: Loading -->
                 <div id="loadingState" class="flex flex-col justify-center items-center py-12 text-gray-500">
@@ -108,10 +111,10 @@
                      <svg class="w-10 h-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                      </svg>
-                     <span class="mt-2">Nama tidak ditemukan.</span>
+                     <span class="mt-2 text-sm">Nama tidak ditemukan.</span>
                 </div>
 
-                <!-- Konten Dinamis (Diganti dari Grid menjadi Flex Column) -->
+                <!-- Konten Dinamis -->
                 <div id="certificateList" class="flex flex-col gap-3">
                     <!-- Item akan dimasukkan di sini oleh JS -->
                 </div>
@@ -120,7 +123,7 @@
         </div>
 
         <!-- Footer Kredit -->
-        <div class="text-center mt-8">
+        <div class="text-center mt-10">
             <p class="text-sm text-gray-600">
                 Created by 
                 <a href="https://asep-trisna-setiawan.sta.my.id/" 
@@ -137,21 +140,20 @@
         // --- Referensi Elemen ---
         const searchInput = document.getElementById('searchInput');
         const listContainer = document.getElementById('certificateListContainer');
-        const certificateList = document.getElementById('certificateList'); // Diubah dari certificateGrid
+        const certificateList = document.getElementById('certificateList');
         const loadingState = document.getElementById('loadingState');
         const notFoundState = document.getElementById('notFoundState');
         const resultsCounter = document.getElementById('resultsCounter');
 
-        let allCertificates = []; // Cache untuk menyimpan semua data
+        let allCertificates = []; 
 
-        // --- (BARU) Helper Functions untuk Avatar ---
+        // --- Helper Functions untuk Avatar ---
         const colorPalette = [
             '#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e', '#14b8a6',
             '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef',
             '#ec4899', '#f43f5e'
         ];
 
-        /** Menghasilkan warna yang konsisten berdasarkan nama */
         function getColorForName(name) {
             let hash = 0;
             for (let i = 0; i < name.length; i++) {
@@ -161,17 +163,14 @@
             return colorPalette[index];
         }
 
-        /** Mendapatkan inisial dari nama */
         function getInitials(name) {
-            const parts = name.split(' ').filter(Boolean); // Pisahkan & hapus spasi ganda
+            const parts = name.split(' ').filter(Boolean); 
             if (parts.length === 0) return '?';
             if (parts.length === 1) return parts[0][0].toUpperCase();
-            // Ambil huruf pertama dari nama pertama dan nama terakhir
             return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
         }
         // --- Akhir Helper Functions ---
 
-        // 1. Fungsi untuk mengambil semua data saat halaman dimuat
         async function fetchAllCertificates() {
             try {
                 const response = await fetch('/all-certificates');
@@ -179,13 +178,11 @@
                     throw new Error(`Gagal memuat: ${response.statusText}`);
                 }
                 const data = await response.json();
-                
-                // Sortir data berdasarkan nama (A-Z)
                 allCertificates = data.sort((a, b) => a.name.localeCompare(b.name));
                 
                 setTimeout(() => {
                     populateList(allCertificates);
-                }, 300); // 300ms delay
+                }, 300); 
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -193,12 +190,10 @@
             }
         }
 
-        // 2. Fungsi untuk mengisi daftar
         function populateList(certificates) {
             loadingState.style.display = 'none';
-            certificateList.innerHTML = ''; // Kosongkan daftar
+            certificateList.innerHTML = ''; 
 
-            // Update counter
             if (certificates.length === 0) {
                 notFoundState.classList.remove('hidden');
                 notFoundState.classList.add('flex');
@@ -215,15 +210,14 @@
                 }
             }
 
-            // Loop setiap hasil dan buat elemen KARTU PROFIL
             certificates.forEach((cert, index) => {
                 const card = document.createElement('div');
                 const initials = getInitials(cert.name);
                 const color = getColorForName(cert.name);
 
-                // --- (BARU) Layout Kartu Profil ---
-                card.className = 'flex items-center space-x-3 bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:scale-[1.01] transition-all duration-200 ease-out fade-in-item';
-                card.style.animationDelay = `${index * 0.03}s`; // Animasi lebih cepat
+                // (PERUBAHAN) Layout Kartu Profil dengan hover 'lift'
+                card.className = 'flex items-center space-x-3 bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:shadow-lg hover:-translate-y-px transition-all duration-200 ease-out fade-in-item';
+                card.style.animationDelay = `${index * 0.03}s`;
 
                 // Avatar
                 const avatar = document.createElement('div');
@@ -233,8 +227,8 @@
 
                 // Info Nama (Flex-grow dan Truncate)
                 const info = document.createElement('div');
-                info.className = 'flex-1 min-w-0'; // Penting untuk truncate
-                info.innerHTML = `<p class="text-sm font-medium text-gray-900 truncate">${cert.name}</p>`;
+                info.className = 'flex-1 min-w-0'; 
+                info.innerHTML = `<p class="text-sm font-medium text-gray-900 truncate" title="${cert.name}">${cert.name}</p>`; // Menambahkan title untuk full name on hover
 
                 // Tombol Unduh
                 const downloadLink = document.createElement('a');
@@ -246,10 +240,9 @@
                     <span class="hidden sm:inline">Unduh</span>
                 `;
                 downloadLink.setAttribute('download', '');
-                // Tombol dibuat lebih kecil dan hanya ikon di HP
-                downloadLink.className = 'inline-flex items-center space-x-1.5 bg-blue-600 text-white font-semibold px-3 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 shadow-sm text-xs';
+                // (PERUBAHAN) Tombol dengan hover gradien
+                downloadLink.className = 'inline-flex items-center space-x-1.5 bg-blue-600 text-white font-semibold px-3 py-2 rounded-md shadow-sm text-xs transition-all duration-200 ease-out hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2';
                 
-                // Gabungkan
                 card.appendChild(avatar);
                 card.appendChild(info);
                 card.appendChild(downloadLink);
@@ -257,7 +250,6 @@
             });
         }
 
-        // 3. Fungsi untuk memfilter
         function filterList() {
             const query = searchInput.value.toLowerCase().trim();
             const filteredData = allCertificates.filter(cert => {
@@ -266,7 +258,7 @@
             populateList(filteredData);
         }
 
-        // 4. Tambahkan event listener
+        // --- Event Listeners ---
         searchInput.addEventListener('keyup', filterList);
         document.addEventListener('DOMContentLoaded', fetchAllCertificates);
     </script>
